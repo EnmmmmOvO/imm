@@ -1,13 +1,19 @@
-import Header from './components/header.tsx';
+import Index from './components/header';
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/home.tsx';
+import Error from './pages/error.tsx';
 
 const App = () => {
   return (
-    <div className="bg-black w-screen">
-      <Header/>
-      <div className="text-black h-[1000px]">temp</div>
-      <div className="text-white h-[1000px]">temp</div>
-
-    </div>
+    <>
+      <Index/>
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 w-screen">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </div>
+    </>
   )
 }
 

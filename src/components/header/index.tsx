@@ -1,14 +1,17 @@
-import MobileMenu from './mobile-menu.tsx';
+import Index from '../mobile-menu';
 import { LanguageIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { closeMobileNav } from '../store.tsx';
+import { closeMobileNav } from '../../store';
+import { useTranslation } from 'react-i18next';
+import Option from './option';
 
 const Header = () => {
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [scrollThreshold, setScrollThreshold] = useState(0);
   const dispatch = useDispatch();
+  const { i18n, t } = useTranslation();
 
   const scrollCheck = () => {
     const scrollTop = window.scrollY;
@@ -30,12 +33,16 @@ const Header = () => {
     setLastScrollTop(scrollTop <= 0 ? 0 : scrollTop);
   };
 
+  const languageChange = () => {
+    i18n.changeLanguage(i18n.language === 'en' ? 'zh' : 'en').catch()
+  }
 
   useEffect(() => {
     window.addEventListener('scroll', scrollCheck);
     return () => {
       window.removeEventListener('scroll', scrollCheck);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastScrollTop]);
 
 
@@ -52,37 +59,22 @@ const Header = () => {
           </div>
 
           <nav className="hidden md:flex md:grow">
-
             <ul className="flex grow justify-center flex-wrap items-center">
-              <li>
-                <a
-                  className="font-medium text-sm text-slate-300 hover:text-white mx-4 lg:mx-5 transition duration-150 ease-in-out"
-                  href="/about"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a className="font-medium text-sm text-slate-300 hover:text-white mx-4 lg:mx-5 transition duration-150 ease-in-out" href="/integrations">Integrations</a>
-              </li>
-              <li>
-                <a className="font-medium text-sm text-slate-300 hover:text-white mx-4 lg:mx-5 transition duration-150 ease-in-out" href="/pricing">Pricing</a>
-              </li>
-              <li>
-                <a className="font-medium text-sm text-slate-300 hover:text-white mx-4 lg:mx-5 transition duration-150 ease-in-out" href="/customers">Customers</a>
-              </li>
-              <li>
-                <a className="font-medium text-sm text-slate-300 hover:text-white mx-4 lg:mx-5 transition duration-150 ease-in-out" href="/changelog">Changelog</a>
-              </li>
+              <Option title={t('home')} to="/" />
+              <Option title={t('about')} to="/about" />
+              <Option title={t('blog')} to="/integrations" />
+              <Option title={t('contact')} to="/pricing" />
             </ul>
-
           </nav>
 
           <ul className="flex-1 flex justify-end items-center">
-            <LanguageIcon className="w-5 h-5 text-slate-300" />
+            <LanguageIcon
+              className="w-5 h-5 text-slate-300 hover:text-white transition duration-150 ease-in-out cursor-pointer"
+              onClick={languageChange}
+            />
           </ul>
 
-          <MobileMenu/>
+          <Index/>
 
         </div>
       </div>

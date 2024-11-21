@@ -1,9 +1,12 @@
 import { useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { closeMobileNav, openMobileNav, RootState } from '../store.tsx';
+import { closeMobileNav, openMobileNav, RootState } from '../../store.tsx';
+import Option from './option.tsx';
+import { useTranslation } from 'react-i18next';
 
 
-export default function MobileMenu() {
+const MobileMenu = () => {
+  const { t } = useTranslation();
   const mobileNavOpen = useSelector((state: RootState) => state.mobileNavOpen)
   const dispatch = useDispatch();
 
@@ -55,23 +58,14 @@ export default function MobileMenu() {
         style={mobileNavOpen ? { maxHeight: mobileNav.current?.scrollHeight, opacity: 1 } : { maxHeight: 0, opacity: 0.8 }}
       >
         <ul className="border border-transparent [background:linear-gradient(theme(colors.slate.900),_theme(colors.slate.900))_padding-box,_conic-gradient(theme(colors.slate.400),_theme(colors.slate.700)_25%,_theme(colors.slate.700)_75%,_theme(colors.slate.400)_100%)_border-box] rounded-lg px-4 py-1.5">
-          <li>
-            <a className="flex font-medium text-sm text-slate-300 hover:text-white py-1.5" href="/about">About</a>
-          </li>
-          <li>
-            <a className="flex font-medium text-sm text-slate-300 hover:text-white py-1.5" href="/integrations">Integrations</a>
-          </li>
-          <li>
-            <a className="flex font-medium text-sm text-slate-300 hover:text-white py-1.5" href="/pricing">Pricing</a>
-          </li>
-          <li>
-            <a className="flex font-medium text-sm text-slate-300 hover:text-white py-1.5" href="/customers">Customers</a>
-          </li>
-          <li>
-            <a className="flex font-medium text-sm text-slate-300 hover:text-white py-1.5" href="/changelog">Changelog</a>
-          </li>
+          <Option title={t('home')} to="/" />
+          <Option title={t('about')} to="/about" />
+          <Option title={t('blog')} to="/integrations" />
+          <Option title={t('contact')} to="/pricing" />
         </ul>
       </nav>
     </div>
   )
 }
+
+export default MobileMenu;
